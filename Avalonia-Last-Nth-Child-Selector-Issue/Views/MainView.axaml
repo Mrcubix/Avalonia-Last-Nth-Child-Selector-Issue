@@ -1,0 +1,53 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:Avalonia_Last_Nth_Child_Selector_Issue.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="450"
+             x:Class="Avalonia_Last_Nth_Child_Selector_Issue.Views.MainView"
+             x:DataType="vm:MainViewModel">
+
+    <Design.DataContext>
+        <vm:MainViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <!-- last element of ItemsRepeater Name "ElementsDisplay" need a margin of 0, no ContentPresenter -->
+        <Style Selector="#ElementsDisplay > TextBlock:nth-last-child(1)">
+            <Setter Property="Margin" Value="0, 0, 0, 8" />
+        </Style>
+
+        <!-- The other method, which doesn't work at all -->
+        <!--<Style Selector="#ElementsDisplay > TextBlock:last-child">
+            <Setter Property="Margin" Value="16, 0, 0, 0" />
+        </Style>-->
+
+        <!-- any other have a margin of 0, 0, 0, 16 -->
+        <Style Selector="#ElementsDisplay > TextBlock">
+            <Setter Property="Margin" Value="8, 0, 0, 8" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid ColumnDefinitions="*" RowDefinitions="*, Auto, Auto">
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
+            <ItemsRepeater ItemsSource="{Binding Elements}" Margin="8" Name="ElementsDisplay">
+                <ItemsRepeater.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" TextAlignment="Center"/>
+                    </DataTemplate>
+                </ItemsRepeater.ItemTemplate>
+            </ItemsRepeater>
+        </ScrollViewer>
+
+        <Button Command="{Binding AddElement}" Grid.Row="1" Margin="8" HorizontalAlignment="Stretch" >
+            <TextBlock Text="Add" TextAlignment="Center"/>
+        </Button>
+
+        <Button Command="{Binding RemoveLastElement}" Grid.Row="2" Margin="8" HorizontalAlignment="Stretch" >
+            <TextBlock Text="Remove Last" TextAlignment="Center"/>
+        </Button>
+
+    </Grid>
+
+</UserControl>
